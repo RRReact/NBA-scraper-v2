@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
-
+import dotenv from "dotenv";
+dotenv.config();
 export const connect = async () => {
-  await mongoose.connect(
-    "mongodb+srv://robi123456:<password>@cluster0.zm1zd.mongodb.net/<dbname>?retryWrites=true&w=majority",
+  mongoose.connect(
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.zm1zd.mongodb.net/nba?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -10,4 +11,7 @@ export const connect = async () => {
       useCreateIndex: true,
     }
   );
+  mongoose.connection.on("connected", () => {
+    console.log("Successfully connected to DB");
+  });
 };
