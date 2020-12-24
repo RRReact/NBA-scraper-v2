@@ -1,7 +1,9 @@
 import express from "express";
-import { connect } from "./db/db";
+import { connect as dbConnect } from "./db/db";
+import { scrap } from "./scraper/scraper";
 const app = express();
-connect();
+dbConnect();
+scrap();
 const port = 3000;
 
 app.listen(port, () => {
