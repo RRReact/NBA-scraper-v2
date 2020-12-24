@@ -2,7 +2,11 @@ import axios from "axios";
 import cheerio from "cheerio";
 
 export const scrap = async () => {
-  const playersLinks = getPlayersLinks();
+  const players = await getPlayersLinks();
+  for (let player of players.slice(0, 1)) {
+    const playerObject = await fetchPlayerData(player);
+    savePlayer(playerObject);
+  }
 };
 const getPlayersLinks = async (): Promise<string[]> => {
   const dataLink =
@@ -22,8 +26,54 @@ const getPlayersLinks = async (): Promise<string[]> => {
   });
   return playersLinks;
 };
+const fetchPlayerData = async (player: string): Promise<Player> => {
+  const html = await axios.get(player);
+  const $ = cheerio.load(html.data);
+  const name = $(".PlayerSummary_playerNameText__K7ZXO").toArray();
+  const firstName = $(name[0]).text();
+  const lastName = $(name[1]).text();
+  const playerImage = $(".PlayerImage_image__1smob").attr("src");
+  const playerDetails = $(".PlayerSummary_playerInfoValue__mSfou").toArray();
+  const height = $(playerDetails[0]).text();
+  const weight = $(playerDetails[1]).text();
+  const country = $(playerDetails[2]).text();
+  const school = $(playerDetails[3]).text();
+  const age = $(playerDetails[4]).text();
+  const birthDate = $(playerDetails[5]).text();
+  const draft = $(playerDetails[6]).text();
+  const experience = $(playerDetails[7]).text();
+  const playerObject: Player = {
+    firstName,
+    lastName,
+    playerImage,
+    height,
+    weight,
+    country,
+    school,
+    age,
+    birthDate,
+    draft,
+    experience,
+  };
+  return playerObject;
+};
+const savePlayer = (playerObject: Player) => {};
+
 interface ResponseData {
   parameters: {};
   resource: string;
   resultSets: [{ headers: []; name: string; rowSet: [] }];
+}
+interface Player {
+  firstName: string;
+  lastName: string;
+  playerImage: string;
+  height: string;
+  weight: string;
+  country: string;
+  school: string;
+  age: string;
+  birthDate: string;
+  draft: string;
+  experience: string;
 }

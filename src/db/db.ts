@@ -11,7 +11,12 @@ export const connect = async () => {
       useCreateIndex: true,
     }
   );
-  mongoose.connection.on("connected", () => {
-    console.log("Successfully connected to DB");
+  const db = mongoose.connection;
+  db.on("error", console.error.bind(console, "connection error:"));
+  db.on("connected", () => {
+    console.log("Connected to DB");
+  });
+  db.on("disconnected", () => {
+    console.log("Mongoose disconnected");
   });
 };
