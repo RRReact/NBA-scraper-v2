@@ -1,5 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
+import PlayerProfile from "../models/PlayerProfile";
 
 export const scrap = async () => {
   const players = await getPlayersLinks();
@@ -57,7 +58,10 @@ const fetchPlayerData = async (player: string): Promise<Player> => {
   };
   return playerObject;
 };
-const savePlayer = (playerObject: Player) => {};
+const savePlayer = (playerObject: Player) => {
+  const player = new PlayerProfile(playerObject);
+  player.save();
+};
 
 interface ResponseData {
   parameters: {};
