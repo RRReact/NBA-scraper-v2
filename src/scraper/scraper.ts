@@ -1,12 +1,22 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import PlayerProfile from "../models/PlayerProfile";
+import { PlayerProfile } from "../models/PlayerProfile";
+import cliProgress from "cli-progress";
 
 export const scrap = async () => {
+  const progressBar = new cliProgress.SingleBar(
+    {},
+    cliProgress.Presets.shades_classic
+  );
+  let currentPlayer = 1;
   const players = await getPlayersLinks();
-  for (let player of players.slice(0, 1)) {
+  progressBar.start(players.length, 0);
+
+  for (let player of players) {
     const playerObject = await fetchPlayerData(player);
     savePlayer(playerObject);
+    progressBar.update(currentPlayer);
+    currentPlayer++;
   }
 };
 const getPlayersLinks = async (): Promise<string[]> => {

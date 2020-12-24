@@ -3,8 +3,11 @@ import { connect as dbConnect } from "./db/db";
 import { scrap } from "./scraper/scraper";
 const app = express();
 const main = async () => {
-  await dbConnect();
-  scrap();
+  dbConnect();
+  console.log("Downloading players data:");
+  setTimeout(() => {
+    scrap();
+  }, 2000);
 };
 main();
 const port = 3000;
