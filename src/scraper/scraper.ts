@@ -38,8 +38,8 @@ const getPlayersLinks = async (): Promise<string[]> => {
   return playersLinks;
 };
 const fetchPlayerData = async (player: string): Promise<Player> => {
-  const html = await axios.get(player);
-  const $ = cheerio.load(html.data);
+  const response = await axios.get(player);
+  const $ = cheerio.load(response.data);
   const name = $(".PlayerSummary_playerNameText__K7ZXO").toArray();
   const firstName = $(name[0]).text();
   const lastName = $(name[1]).text();
