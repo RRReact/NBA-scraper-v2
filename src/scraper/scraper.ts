@@ -9,6 +9,7 @@ export const scrap = async () => {
     cliProgress.Presets.shades_classic
   );
   let currentPlayer = 1;
+  //slice
   const players = await getPlayersLinks();
   progressBar.start(players.length, 0);
 
