@@ -6,7 +6,7 @@ const updateBase: RequestHandler = (req, res) => {
   mongoose.connection.db.dropCollection("playerprofiles", async () => {
     try {
       console.log("Players collection droppped");
-      console.log("Downloadinng new collection:");
+      console.log("Downloading new collection:");
       await scrap();
       setTimeout(() => {
         console.log("\n", "Downloading collection ended!");

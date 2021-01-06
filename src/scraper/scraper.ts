@@ -2,6 +2,7 @@ import axios from "axios";
 import cheerio from "cheerio";
 import { PlayerProfile } from "../models/PlayerProfile";
 import cliProgress from "cli-progress";
+import { Player } from "../types/player";
 
 export const scrap = async () => {
   const progressBar = new cliProgress.SingleBar(
@@ -29,7 +30,7 @@ const getPlayersLinks = async (): Promise<string[]> => {
     url: dataLink,
   });
 
-  const data: ResponseData = response.data;
+  const data: NbaApiResponseData = response.data;
   const playersData = data.resultSets[0].rowSet;
   const playersLinks = playersData.map((playerData) => {
     const playerId = playerData[0];
@@ -74,21 +75,8 @@ const savePlayer = (playerObject: Player) => {
   player.save();
 };
 
-interface ResponseData {
+interface NbaApiResponseData {
   parameters: {};
   resource: string;
   resultSets: [{ headers: []; name: string; rowSet: [] }];
-}
-interface Player {
-  firstName: string;
-  lastName: string;
-  playerImage: string;
-  height: string;
-  weight: string;
-  country: string;
-  school: string;
-  age: string;
-  birthDate: string;
-  draft: string;
-  experience: string;
 }
