@@ -1,10 +1,12 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import { PlayerProfile, HistoricalPlayerProfile } from "../models/PlayerProfile";
+import { CurrentPlayerProfile, HistoricalPlayerProfile } from "../models/PlayerProfile";
 import cliProgress from "cli-progress";
-import { Player } from "../types/player";
 
-export const scrap = async (season: "current" | "historical") => {
+import { Player } from "../types/player";
+import { currentHistorical } from "../types/season";
+
+export const scrap = async (season: currentHistorical) => {
     const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     let currentPlayer = 1;
     const players = await getPlayersLinks(season);
@@ -12,12 +14,12 @@ export const scrap = async (season: "current" | "historical") => {
 
     for (let player of players) {
         const playerObject = await fetchPlayerData(player);
-        savePlayer(playerObject);
+        savePlayer(playerObject, season);
         progressBar.update(currentPlayer);
         currentPlayer++;
     }
 };
-const getPlayersLinks = async (season: "current" | "historical"): Promise<string[]> => {
+const getPlayersLinks = async (season: currentHistorical): Promise<string[]> => {
     const dataLink = `https://stats.nba.com/stats/playerindex?College=&Country=&DraftPick=&DraftRound=&DraftYear=&Height=&Historical=${
         season === "current" ? 0 : 1
     }&LeagueID=00&Season=2020-21&SeasonType=Regular%20Season&TeamID=0&Weight=`;
@@ -68,9 +70,16 @@ const fetchPlayerData = async (player: string): Promise<Player> => {
     };
     return playerObject;
 };
-const savePlayer = (playerObject: Player) => {
-    const player = new PlayerProfile(playerObject);
-    player.save();
+const savePlayer = (playerObject: Player, season: currentHistorical) => {
+    if (season === "current") {
+        const player = new CurrentPlayerProfile(playerObject);
+        player.save();
+    } else if (season === "historical") {
+        const player = new HistoricalPlayerProfile(playerObject);
+        player.save();
+    } else {
+        console.log("bad route");
+    }
 };
 
 interface NbaApiResponseData {

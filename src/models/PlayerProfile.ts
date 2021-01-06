@@ -13,5 +13,5 @@ const schema = new mongoose.Schema({
     draft: String,
     experience: String,
 });
-export const PlayerProfile = mongoose.model("PlayerProfile", schema);
+export const CurrentPlayerProfile = mongoose.model("CurrentPlayerProfile", schema);
 export const HistoricalPlayerProfile = mongoose.model("HistoricalPlayerProfile", schema);
