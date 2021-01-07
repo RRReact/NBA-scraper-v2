@@ -9,7 +9,6 @@ const schema = new mongoose.Schema({
     weight: String,
     country: String,
     school: String,
-    age: String,
     birthDate: String,
     draft: String,
     stats: { ppg: Number, rpg: Number, apg: Number },

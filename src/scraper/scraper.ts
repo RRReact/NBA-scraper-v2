@@ -53,7 +53,6 @@ const fetchPlayerData = async (player: any[], season: currentHistorical): Promis
         playerImage,
         country,
         school,
-        age: "age",
         draft,
         stats,
     };

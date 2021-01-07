@@ -7,7 +7,6 @@ export interface Player {
     weight: string;
     country: string;
     school: string;
-    age: string;
     draft: string;
     stats: { ppg: number; rpg: number; apg: number };
 }
