@@ -1,9 +1,8 @@
 import express from "express";
-import { update } from "../controllers/update";
 import { checkSeason } from "../middleware/checkSeason";
-
+import { players } from "../controllers/players";
 const router = express.Router();
 
-router.put("/:season", checkSeason, update);
+router.get("/:season", checkSeason, players);
 
 export default router;

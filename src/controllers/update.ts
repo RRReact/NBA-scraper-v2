@@ -7,20 +7,8 @@ import { scrap } from "../scraper/scraper";
 import { currentHistorical } from "../types/season";
 import { Collection } from "../types/collections";
 
-const success = "Downloading {season} collection success!";
-const fail = "Wrong season update 'historical' or 'current'!";
-
-export const checkSeason: RequestHandler = (req, res, next) => {
-    const season = req.params.season as currentHistorical;
-    if (season === "current" || season === "historical") {
-        next();
-    } else {
-        console.log(fail.replace("{season}", season));
-        res.status(404).json({ message: fail });
-    }
-};
-
-export const updateBase: RequestHandler = (req, res) => {
+export const update: RequestHandler = (req, res) => {
+    const success = "Downloading {season} collection success!";
     const season = req.params.season as currentHistorical;
     mongoose.connection.db.dropCollection(season === "current" ? Collection.CURRENT : Collection.HISTORICAL, async () => {
         try {
