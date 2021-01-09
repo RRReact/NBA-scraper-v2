@@ -10,12 +10,10 @@ export const scrapTeams = async () => {
     // }
 };
 const fetchTeamsUrl = async () => {
-    const url = "https://www.nba.com/stats/teams/";
-    const response = await axios.get(url);
-    const html = response.data;
-    console.log(html);
-
-    const $ = cheerio.load(html);
-    const teamsUrls = $(".stats-team-list__link").toArray();
-    console.log(teamsUrls);
+    const teamsIdsUrl = "https://neulionms-a.akamaihd.net/nbad/player/v1/nba/site_spa/config.json";
+    const response = await axios.get(teamsIdsUrl);
+    const resourceIds = response.data.TEAM_TVE_RESOURCE_IDS;
+    const processedIds = resourceIds.map((id: string) => {
+        return id.replace("NBATP-", "");
+    });
 };
