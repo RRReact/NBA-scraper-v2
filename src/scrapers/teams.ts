@@ -27,7 +27,15 @@ const fetchTeamsUrl = async () => {
     return nbaTeams;
 };
 
-const fetchTeamData = async (team: TeamResponse) => {};
+const fetchTeamData = async (team: TeamResponse) => {
+    const { id, name, city, conference, divison, code } = team;
+    const teamUrl = `https://www.nba.com/stats/team/${id}/`;
+    const response = await axios.get(teamUrl);
+    const html = response.data;
+    const $ = cheerio.load(html);
+    const logo = `https://www.nba.com/stats/media/img/teams/logos/${code}_logo.svg`;
+    return { name, city, conference, divison, logo };
+};
 
 interface TeamResponse {
     city: string;
@@ -36,6 +44,7 @@ interface TeamResponse {
     conference: string;
     divison: string;
     name: string;
+    id: string;
 }
 interface TeamRecord {
     [T: string]: TeamResponse;
