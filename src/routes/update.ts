@@ -1,9 +1,10 @@
 import express from "express";
 import { checkSeason } from "../middleware/checkSeason";
-import { update } from "../controllers/update";
+import { updatePlayers, updateTeams } from "../controllers/update";
 
 const router = express.Router();
 
-router.put("/:season", checkSeason, update);
+router.put("/players/:season", checkSeason, updatePlayers);
+router.put("/teams", updateTeams);
 
 export default router;

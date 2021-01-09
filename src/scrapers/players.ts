@@ -5,7 +5,7 @@ import { CurrentPlayerProfile, HistoricalPlayerProfile } from "../models/PlayerP
 import { Player } from "../types/player";
 import { currentHistorical } from "../types/season";
 
-export const scrap = async (season: currentHistorical) => {
+export const scrapPlayers = async (season: currentHistorical) => {
     const players = await fetchPlayersUrl(season);
 
     for (let player of players) {
