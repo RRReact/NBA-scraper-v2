@@ -10,3 +10,8 @@ export interface Player {
     draft: string;
     stats: { ppg: number; rpg: number; apg: number };
 }
+
+export interface PlayerRequest {
+    firstName: string;
+    lastName: string;
+}
