@@ -8,7 +8,6 @@ export const checkSeason: RequestHandler = (req, res, next) => {
     if (season === "current" || season === "historical") {
         return next();
     } else {
-        console.log(fail.replace("{season}", season));
         res.status(404).json({ message: fail });
     }
 };

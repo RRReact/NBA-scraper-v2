@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import { RequestHandler } from "express";
 
 import { scrapPlayers } from "../scrapers/players";
+import { scrapTeams } from "../scrapers/teams";
 
 import { currentHistorical } from "../types/season";
 import { Collection } from "../types/collections";
 
-//@update/
 export const updatePlayers: RequestHandler = async (req, res) => {
     const success = "Downloading {season} collection success!";
     const season = req.params.season as currentHistorical;
@@ -24,8 +24,9 @@ export const updatePlayers: RequestHandler = async (req, res) => {
 };
 export const updateTeams: RequestHandler = async (req, res) => {
     try {
-        await mongoose.connection.db.dropCollection(Collection.TEAMS);
+        // await mongoose.connection.db.dropCollection(Collection.TEAMS);
         console.log("Teams collection dropped!");
+        scrapTeams();
     } catch (error) {
         console.log(error);
         res.status(500).json(error);
