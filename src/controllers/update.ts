@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
-import chalk from "chalk";
 
 import { scrap } from "../scraper/scraper";
 
@@ -12,10 +11,10 @@ export const update: RequestHandler = (req, res) => {
     const season = req.params.season as currentHistorical;
     mongoose.connection.db.dropCollection(season === "current" ? Collection.CURRENT : Collection.HISTORICAL, async () => {
         try {
-            console.log(`Players ${chalk.red(season)} collection droppped!`);
-            console.log(`Downloading new ${chalk.yellow(season)} season collection!`);
+            console.log(`Players ${season} collection droppped!`);
+            console.log(`Downloading new ${season} season collection!`);
             await scrap(season);
-            console.log(success.replace("{season}", chalk.green(season)));
+            console.log(success.replace("{season}", season));
             res.status(201).json({ message: success.replace("{season}", season) });
         } catch (error) {
             console.log("Error occured!");
