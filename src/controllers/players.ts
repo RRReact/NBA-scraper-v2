@@ -4,7 +4,6 @@ import { CurrentPlayerProfile, HistoricalPlayerProfile } from "../models/PlayerP
 
 export const players: RequestHandler = async (req, res, next) => {
     const season = req.params.season as currentHistorical;
-
     const players = season === "current" ? await CurrentPlayerProfile.find({}) : await HistoricalPlayerProfile.find({});
     res.status(200).json(players);
 };

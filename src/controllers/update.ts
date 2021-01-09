@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { RequestHandler } from "express";
 
-import { scrap } from "../scraper/scraper";
+import { scrap } from "../scrapers/scraper";
 
 import { currentHistorical } from "../types/season";
 import { Collection } from "../types/collections";

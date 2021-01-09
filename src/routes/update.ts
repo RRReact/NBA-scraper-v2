@@ -1,6 +1,6 @@
 import express from "express";
-import { update } from "../controllers/update";
 import { checkSeason } from "../middleware/checkSeason";
+import { update } from "../controllers/update";
 
 const router = express.Router();
 
