@@ -6,7 +6,10 @@ import { Team } from "../types/team";
 
 export const teams: RequestHandler = async (req, res, next) => {
     const teams = await TeamProfile.find({});
-    //     const playersIds = teams.
+    const playersIds = teams.map(team => {
+        const { playerIds } = team;
+        playerIds.map(playerId => {});
+    });
     // const teamPlayers = await team
     res.status(200).json(teams);
 };
