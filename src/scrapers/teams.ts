@@ -30,7 +30,8 @@ const fetchTeamsData = async () => {
         const year = new Date().getFullYear();
         const yearBefore = year - 1;
         const url = `https://stats.nba.com/stats/commonteamroster?LeagueID=00&Season=${yearBefore}-${year - 2000}&TeamID=${id}`;
-        const response = await axios({ method: "GET", url, headers: { Referer: "https://www.nba.com/", Accept: "*/*" } });
+        const response = await axios({ method: "get", url, headers: { Referer: "https://www.nba.com/", Accept: "*/*" } });
+        console.log(`Downloading data for ${city} ${name} team`);
         const playerIds = response.data.resultSets[0].rowSet.map(player => player[0]);
         const logo = `https://www.nba.com/stats/media/img/teams/logos/${code}_logo.svg`;
         nbaTeams.push({ city, name, conference, divison, logo, playerIds });
