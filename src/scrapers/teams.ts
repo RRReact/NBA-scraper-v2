@@ -4,17 +4,17 @@ import { Team } from "../types/team";
 import cheerio from "cheerio";
 
 export const scrapTeams = async () => {
-    const teams = await fetchTeamsUrl();
+    const teams = await fetchTeamsData();
     for (let team of teams) {
-        const teamObject = await fetchTeamData(team);
-        // savePlayer(playerObject, season);
+        // saveTeam(team);
     }
 };
-const fetchTeamsUrl = async () => {
-    const teamsIdsUrl = "https://neulionms-a.akamaihd.net/nbad/player/v1/nba/site_spa/config.json";
-    const nbaTeams: TeamResponse[] = [];
+const fetchTeamsData = async () => {
+    const teamsData = "https://neulionms-a.akamaihd.net/nbad/player/v1/nba/site_spa/config.json";
+    const nbaTeamsPartialData = [];
+    const nbaTeams = [];
 
-    const response = await axios.get(teamsIdsUrl);
+    const response = await axios.get(teamsData);
     const allTeammIds: string[] = response.data.TEAM_TVE_RESOURCE_IDS;
     const nbaIds = allTeammIds.map((id: string) => {
         return id.replace("NBATP-", "");
@@ -22,37 +22,22 @@ const fetchTeamsUrl = async () => {
     const unfilteredTeams: TeamRecord = response.data.teams;
     nbaIds.forEach((id: string) => {
         if (unfilteredTeams[id]) {
-            nbaTeams.push(unfilteredTeams[id]);
+            nbaTeamsPartialData.push(unfilteredTeams[id]);
         }
     });
+    for (let team of nbaTeamsPartialData) {
+        const { city, name, conference, divison, code, id } = team;
+        const year = new Date().getFullYear();
+        const yearBefore = year - 1;
+        const url = `https://stats.nba.com/stats/commonteamroster?LeagueID=00&Season=${yearBefore}-${year - 2000}&TeamID=${id}`;
+        const response = await axios({ method: "GET", url, headers: { Referer: "https://www.nba.com/", Accept: "*/*" } });
+        const playerIds = response.data.resultSets[0].rowSet.map(player => player[0]);
+        const logo = `https://www.nba.com/stats/media/img/teams/logos/${code}_logo.svg`;
+        nbaTeams.push({ city, name, conference, divison, logo, playerIds });
+    }
     return nbaTeams;
 };
 
-const fetchTeamData = async (team: TeamResponse) => {
-    const { id, name, city, conference, divison, code } = team;
-    const teamUrl = `https://www.nba.com/stats/team/${id}/`;
-    const response = await axios.get(teamUrl);
-    const html = response.data;
-    const $ = cheerio.load(html);
-    const logo = `https://www.nba.com/stats/media/img/teams/logos/${code}_logo.svg`;
-    const playerElements = $(".player > a").toArray();
-    const playerIds = playerElements.map(playerElement =>
-        $(playerElement)
-            .find("a")
-            .attr("href"),
-    );
-    return { name, city, conference, divison, logo, playerIds };
-};
-
-interface TeamResponse {
-    city: string;
-    code: string;
-    color: string;
-    conference: string;
-    divison: string;
-    name: string;
-    id: string;
-}
 interface TeamRecord {
-    [T: string]: TeamResponse;
+    [T: string]: Team;
 }
