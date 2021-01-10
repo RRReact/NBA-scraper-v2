@@ -59,15 +59,8 @@ const fetchPlayerData = async (player: any[], season: currentHistorical): Promis
 };
 
 const savePlayer = (playerObject: Player, season: currentHistorical) => {
-    if (season === "current") {
-        const player = new CurrentPlayerProfile(playerObject);
-        player.save();
-    } else if (season === "historical") {
-        const player = new HistoricalPlayerProfile(playerObject);
-        player.save();
-    } else {
-        console.log("bad route");
-    }
+    const player = season === "current" ? new CurrentPlayerProfile(playerObject) : new HistoricalPlayerProfile(playerObject);
+    player.save();
 };
 
 interface NbaApiResponseData {

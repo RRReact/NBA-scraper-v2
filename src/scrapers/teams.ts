@@ -1,5 +1,6 @@
 import axios from "axios";
 import { TeamProfile } from "../models/TeamProfile";
+import { Team } from "../types/team";
 import cheerio from "cheerio";
 
 export const scrapTeams = async () => {
@@ -14,12 +15,12 @@ const fetchTeamsUrl = async () => {
     const nbaTeams: TeamResponse[] = [];
 
     const response = await axios.get(teamsIdsUrl);
-    const resourceIds: string[] = response.data.TEAM_TVE_RESOURCE_IDS;
-    const ids = resourceIds.map((id: string) => {
+    const allTeammIds: string[] = response.data.TEAM_TVE_RESOURCE_IDS;
+    const nbaIds = allTeammIds.map((id: string) => {
         return id.replace("NBATP-", "");
     });
     const unfilteredTeams: TeamRecord = response.data.teams;
-    ids.forEach((id: string) => {
+    nbaIds.forEach((id: string) => {
         if (unfilteredTeams[id]) {
             nbaTeams.push(unfilteredTeams[id]);
         }
@@ -34,7 +35,13 @@ const fetchTeamData = async (team: TeamResponse) => {
     const html = response.data;
     const $ = cheerio.load(html);
     const logo = `https://www.nba.com/stats/media/img/teams/logos/${code}_logo.svg`;
-    return { name, city, conference, divison, logo };
+    const playerElements = $(".player > a").toArray();
+    const playerIds = playerElements.map(playerElement =>
+        $(playerElement)
+            .find("a")
+            .attr("href"),
+    );
+    return { name, city, conference, divison, logo, playerIds };
 };
 
 interface TeamResponse {

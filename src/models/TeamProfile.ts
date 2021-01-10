@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema({
     name: String,
     logo: String,
-    coaching_staff: Array,
-    player_roster: Array,
+    coachingStaff: Array,
+    playerRoster: Array,
 });
 export const TeamProfile = mongoose.model("TeamProfile", schema);
