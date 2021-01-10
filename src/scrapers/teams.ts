@@ -1,12 +1,11 @@
 import axios from "axios";
 import { TeamProfile } from "../models/TeamProfile";
 import { Team } from "../types/team";
-import cheerio from "cheerio";
 
 export const scrapTeams = async () => {
-    const teams = await fetchTeamsData();
+    const teams: Team[] = await fetchTeamsData();
     for (let team of teams) {
-        // saveTeam(team);
+        saveTeam(team);
     }
 };
 const fetchTeamsData = async () => {
@@ -33,12 +32,21 @@ const fetchTeamsData = async () => {
         const response = await axios({ method: "get", url, headers: { Referer: "https://www.nba.com/", Accept: "*/*" } });
         console.log(`Downloading data for ${city} ${name} team`);
         const playerIds = response.data.resultSets[0].rowSet.map(player => player[0]);
+        const coachingStaff = response.data.resultSets[1].rowSet.map(coach => {
+            const position = coach[7];
+            const firstName = coach[3];
+            const lastName = coach[4];
+            return { firstName, lastName, position };
+        });
         const logo = `https://www.nba.com/stats/media/img/teams/logos/${code}_logo.svg`;
-        nbaTeams.push({ city, name, conference, divison, logo, playerIds });
+        nbaTeams.push({ city, name, conference, divison, logo, playerIds, coachingStaff });
     }
     return nbaTeams;
 };
-
+const saveTeam = (teamObject: Team) => {
+    const team = new TeamProfile(teamObject);
+    team.save();
+};
 interface TeamRecord {
     [T: string]: Team;
 }
