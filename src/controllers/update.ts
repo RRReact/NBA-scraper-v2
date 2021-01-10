@@ -24,7 +24,7 @@ export const updatePlayers: RequestHandler = async (req, res) => {
 };
 export const updateTeams: RequestHandler = async (req, res) => {
     try {
-        // await mongoose.connection.db.dropCollection(Collection.TEAMS);
+        await mongoose.connection.db.dropCollection(Collection.TEAMS);
         console.log("Teams collection dropped!");
         await scrapTeams();
         res.status(201).json({ message: "Downloading teams collection success!" });
