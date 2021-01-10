@@ -4,10 +4,13 @@ import { Team } from "../types/team";
 import sleep from "../utils/sleep";
 
 export const scrapTeams = async () => {
-    const teams: Team[] = await fetchTeamsData();
-    for (let team of teams) {
-        saveTeam(team);
-    }
+    return new Promise(async resolve => {
+        const teams: Team[] = await fetchTeamsData();
+        for (let team of teams) {
+            saveTeam(team);
+        }
+        resolve(teams);
+    });
 };
 const fetchTeamsData = async () => {
     try {
@@ -28,7 +31,7 @@ const fetchTeamsData = async () => {
         });
         for (let team of nbaTeamsPartialData) {
             //prevent ip ban for to fast interval between requests
-            await sleep(5000);
+            await sleep(2000);
             const { city, name, conference, divison, code, id } = team;
             const year = new Date().getFullYear();
             const yearBefore = year - 1;

@@ -6,12 +6,15 @@ import { Player } from "../types/player";
 import { currentHistorical } from "../types/season";
 
 export const scrapPlayers = async (season: currentHistorical) => {
-    const players = await fetchPlayersUrl(season);
+    return new Promise(async resolve => {
+        const players = await fetchPlayersUrl(season);
 
-    for (let player of players) {
-        const playerObject = await fetchPlayerData(player, season);
-        savePlayer(playerObject, season);
-    }
+        for (let player of players) {
+            const playerObject = await fetchPlayerData(player, season);
+            savePlayer(playerObject, season);
+        }
+        resolve(players);
+    });
 };
 const fetchPlayersUrl = async (season: currentHistorical): Promise<Array<any[]>> => {
     const dataUrl = `https://stats.nba.com/stats/playerindex?College=&Country=&DraftPick=&DraftRound=&DraftYear=&Height=&Historical=${
