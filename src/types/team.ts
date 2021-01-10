@@ -5,4 +5,5 @@ export interface Team {
     divison: string;
     logo: string;
     playerIds: string[];
+    coachingStaff: { firstName: string; lastName: string; position: string }[];
 }
