@@ -47,7 +47,7 @@ const fetchTeamsData = async () => {
                 },
             });
 
-            const playerIds = response.data.resultSets[0].rowSet.map(player => player[0]);
+            const playersIds = response.data.resultSets[0].rowSet.map(player => player[13]);
             const coachingStaff = response.data.resultSets[1].rowSet.map(coach => {
                 const position = coach[7];
                 const firstName = coach[3];
@@ -55,7 +55,7 @@ const fetchTeamsData = async () => {
                 return { firstName, lastName, position };
             });
             const logo = `https://www.nba.com/stats/media/img/teams/logos/${code}_logo.svg`;
-            nbaTeams.push({ city, name, conference, divison, logo, playerIds, coachingStaff });
+            nbaTeams.push({ city, name, conference, divison, logo, playersIds, coachingStaff });
         }
         return nbaTeams;
     } catch (error) {

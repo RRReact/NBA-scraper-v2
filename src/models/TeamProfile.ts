@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Team } from "../types/team";
+
 const schema = new mongoose.Schema({
     name: String,
     city: String,
@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     conference: String,
     divison: String,
     coachingStaff: [Object],
-    playerIds: [String],
+    playersIds: [String],
 });
 export const TeamProfile = mongoose.model<TeamDoc>("TeamProfile", schema);
 
@@ -17,6 +17,6 @@ interface TeamDoc extends mongoose.Document {
     conference: string;
     divison: string;
     logo: string;
-    playerIds: string[];
+    playersIds: string[];
     coachingStaff: { firstName: string; lastName: string; position: string }[];
 }

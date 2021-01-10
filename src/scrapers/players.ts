@@ -48,6 +48,7 @@ const fetchPlayerData = async (player: any[], season: currentHistorical): Promis
     };
 
     return {
+        nbaId: playerId,
         firstName,
         lastName,
         team,

@@ -4,6 +4,6 @@ export interface Team {
     conference: string;
     divison: string;
     logo: string;
-    playerIds: string[];
+    playersIds: string[];
     coachingStaff: { firstName: string; lastName: string; position: string }[];
 }

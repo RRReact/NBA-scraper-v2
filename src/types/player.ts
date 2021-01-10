@@ -1,4 +1,5 @@
 export interface Player {
+    nbaId: string;
     firstName: string;
     lastName: string;
     team: string;

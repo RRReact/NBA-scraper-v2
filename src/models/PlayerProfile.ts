@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
+    nbaId: String,
     firstName: String,
     lastName: String,
     team: String,
@@ -17,6 +18,7 @@ export const CurrentPlayerProfile = mongoose.model<PlayerDoc>("CurrentPlayerProf
 export const HistoricalPlayerProfile = mongoose.model<PlayerDoc>("HistoricalPlayerProfile", schema);
 
 interface PlayerDoc extends mongoose.Document {
+    nbaId: string;
     firstName: string;
     lastName: string;
     team: string;
