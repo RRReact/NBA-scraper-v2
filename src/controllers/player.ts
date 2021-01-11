@@ -17,7 +17,10 @@ export const player: RequestHandler = async (req, res, next) => {
     }
 };
 export const playerById: RequestHandler = async (req, res, next) => {
-    const id = req.params.id;
+    const { id } = req.body;
+    if (!id) {
+        res.status(400);
+    }
     const season = req.params.season;
     const player =
         season === "current"

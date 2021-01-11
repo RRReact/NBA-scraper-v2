@@ -7,3 +7,4 @@ export const players: RequestHandler = async (req, res, next) => {
     const players = season === "current" ? await CurrentPlayerProfile.find({}) : await HistoricalPlayerProfile.find({});
     res.status(200).json(players);
 };
+export const playersByIds: RequestHandler = async (req, res, next) => {};
