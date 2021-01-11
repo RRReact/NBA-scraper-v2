@@ -5,7 +5,7 @@ import { player, playerById } from "../controllers/player";
 
 const router = express.Router();
 
-router.get("/id/:id", playerById);
+router.get("/id/:season/:id", playerById);
 router.post("/:season", checkSeason, checkRequestBody, player);
 
 export default router;

@@ -18,7 +18,11 @@ export const player: RequestHandler = async (req, res, next) => {
 };
 export const playerById: RequestHandler = async (req, res, next) => {
     const id = req.params.id;
-    const player = await CurrentPlayerProfile.findOne({ nbaId: id });
+    const season = req.params.season;
+    const player =
+        season === "current"
+            ? await CurrentPlayerProfile.findOne({ nbaId: id })
+            : await HistoricalPlayerProfile.findOne({ nbaId: id });
     if (!player) {
         res.status(404).json({ message: "Player not found" });
     } else {
