@@ -17,3 +17,11 @@ export const checkPlayerByIdRequestBody: RequestHandler = (req, res, next) => {
         res.status(400).json({ message: "Wrong body sent" });
     }
 };
+export const checkTeamRequestBody: RequestHandler = (req, res, next) => {
+    const { name, city } = req.body;
+    if (name && city) {
+        return next();
+    } else {
+        res.status(400).json({ message: "Wrong body sent" });
+    }
+};

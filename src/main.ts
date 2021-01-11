@@ -5,6 +5,7 @@ import update from "./routes/update";
 import players from "./routes/players";
 import player from "./routes/player";
 import teams from "./routes/teams";
+import team from "./routes/team";
 import bodyParser from "body-parser";
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use("/update", update);
 app.use("/players", players);
 app.use("/player", player);
 app.use("/teams", teams);
+app.use("/team", team);
 mongoose
     .connect(
         `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.zm1zd.mongodb.net/nba?retryWrites=true&w=majority`,
